@@ -1,79 +1,145 @@
-using System.Reflection;
+ using System.Reflection;
 
 namespace Программа
 {
-    internal class WordContent
+    public class Word
     {
-        //public Guid id;
-        protected string contentEng;
-        protected string contentRu;
+        public string WordText { get; set; } // Поле для хранения слова
+        public string Translation { get; set; } // Поле для хранения перевода
 
-        public WordContent(string contentEng, string contentRu)
+        public Word(string wordText, string translation)
         {
-            this.contentEng = contentEng;
-            this.contentRu = contentRu;
-            //this.id = Guid.NewGuid();
-        }
-
-        public void setContentEng(string newContentEng)
-        {
-            this.contentEng = newContentEng;
-        }
-        public void setContentRu(string newContentRu) 
-        {
-            this.contentRu = newContentRu;
-        }
-        public string getContentEng()
-        {
-            return this.contentEng;
-        }
-        public string getContentRu()
-        {
-            return this.contentRu;
-        }
-
-        public override string ToString()
-        {
-            return this.contentEng + " - " + this.contentRu;
+            WordText = wordText;
+            Translation = translation;
         }
     }
 
-    internal class Word : WordContent
+    public class FileHandler
     {
-        public Word(string contentEng, string contentRu) : base(contentEng, contentRu)
-        {
-        }
-    }
+        string mainPath = Environment.CurrentDirectory + "\\WordContents\\";
 
-    internal class Phrase : WordContent
-    {
-        public Phrase(string contentEng, string contentRu) : base(contentEng, contentRu)
+        public void WriteToFile(string fileName, List<Word> words)
         {
-        }
-    }
-
-    internal class FileManage
-    {
-        private string mainPath = Environment.CurrentDirectory + "\\WordContents\\";
-
-        public string readFile(string filename)
-        {
-            return File.ReadAllText(mainPath + filename);
-        }
-
-        public void addLine(string filename, WordContent phrase)
-        {
-            File.AppendAllText(mainPath + filename, phrase.ToString());
-        }
-
-        public void addLines(string filename, WordContent[] array) 
-        {
-            List<string> list = new List<string>();
-            foreach (WordContent listitem in array)
+            using (StreamWriter writer = new StreamWriter(mainPath + fileName))
             {
-                list.Add(listitem.ToString());
+                foreach (Word word in words)
+                {
+                    writer.WriteLine($"{word.WordText}:{word.Translation}");
+                }
             }
-            File.WriteAllLines(mainPath + filename, list);
+        }
+
+        public List<Word> ReadFromFile(string fileName)
+        {
+            List<Word> words = new List<Word>();
+            
+
+            using (StreamReader reader = new StreamReader(mainPath + fileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split(':');
+                    if (parts.Length == 2)
+                    {
+                        string word = parts[0].Trim();
+                        string translation = parts[1].Trim();
+                        Word newWord = new Word(word, translation);
+                        words.Add(newWord);
+                    }
+                }
+            }
+
+            return words;
+        }
+    }
+
+    public class Dictionary
+    {
+        private List<Word> words; // Поле для хранения списка слов
+        string mainPath = Environment.CurrentDirectory + "\\WordContents\\";
+
+        public Dictionary()
+        {
+            words = new List<Word>();
+        }
+
+        public void AddWord(string word, string translation)
+        {
+            Word newWord = new Word(word, translation);
+            words.Add(newWord);
+        }
+
+        public void RemoveWord(string word)
+        {
+            Word wordToRemove = words.Find(w => w.WordText.Equals(word, StringComparison.OrdinalIgnoreCase));
+            if (wordToRemove != null)
+            {
+                words.Remove(wordToRemove);
+            }
+        }
+
+        public void EditWord(string word, string newWord, string newTranslation)
+        {
+            Word wordToEdit = words.Find(w => w.WordText.Equals(word, StringComparison.OrdinalIgnoreCase));
+            if (wordToEdit != null)
+            {
+                wordToEdit.WordText = newWord;
+                wordToEdit.Translation = newTranslation;
+            }
+        }
+
+        public string ConvertToStringList()
+        {
+            List<string> wordList = new List<string>();
+            foreach (Word word in words)
+            {
+                string wordString = $"{word.WordText} - {word.Translation}";
+                wordList.Add(wordString);
+            }
+            string concatenatedString = string.Join(Environment.NewLine, wordList);
+            return concatenatedString;
+        }
+
+
+        public void SaveToFile(string fileName)
+        {
+            using (StreamWriter writer = new StreamWriter(mainPath + fileName))
+            {
+                foreach (Word word in words)
+                {
+                    writer.WriteLine($"{word.WordText}:{word.Translation}");
+                }
+            }
+        }
+
+        public void LoadFromFile(string fileName)
+        {
+            words.Clear(); // Очистить текущий список слов
+
+            using (StreamReader reader = new StreamReader(mainPath + fileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split(':');
+                    if (parts.Length == 2)
+                    {
+                        string word = parts[0].Trim();
+                        string translation = parts[1].Trim();
+                        AddWord(word, translation);
+                    }
+                }
+            }
+        }
+        public void SortWords()
+        {
+            words.Sort((w1, w2) => w1.WordText.CompareTo(w2.WordText));
+        }
+
+        public int CountWords()
+        {
+            return words.Count;
         }
     }
 

@@ -30,10 +30,13 @@
         {
             tabControl = new TabControl();
             tabPage1 = new TabPage();
+            tab1LabelCountPhrases = new Label();
+            tab1ButtonSearch = new Button();
+            tab1TextBoxSearch = new TextBox();
+            tab1LabelSearch = new Label();
+            tab1LabelCountWords = new Label();
             tab1TextboxPhrases = new RichTextBox();
             tab1TextboxWords = new RichTextBox();
-            tab1ButtonPhrases = new Button();
-            tab1ButtonWords = new Button();
             tabPage2 = new TabPage();
             tab2listBox = new ListBox();
             tab2ButtonPhrase = new Button();
@@ -46,7 +49,6 @@
             tab3Label3 = new Label();
             tab3Label2 = new Label();
             tab3Label1 = new Label();
-            folderBrowserDialog1 = new FolderBrowserDialog();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -63,13 +65,17 @@
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(704, 475);
             tabControl.TabIndex = 0;
+            tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(tab1LabelCountPhrases);
+            tabPage1.Controls.Add(tab1ButtonSearch);
+            tabPage1.Controls.Add(tab1TextBoxSearch);
+            tabPage1.Controls.Add(tab1LabelSearch);
+            tabPage1.Controls.Add(tab1LabelCountWords);
             tabPage1.Controls.Add(tab1TextboxPhrases);
             tabPage1.Controls.Add(tab1TextboxWords);
-            tabPage1.Controls.Add(tab1ButtonPhrases);
-            tabPage1.Controls.Add(tab1ButtonWords);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -78,45 +84,74 @@
             tabPage1.Text = "Dictionary";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tab1LabelCountPhrases
+            // 
+            tab1LabelCountPhrases.AutoSize = true;
+            tab1LabelCountPhrases.Location = new Point(23, 249);
+            tab1LabelCountPhrases.Name = "tab1LabelCountPhrases";
+            tab1LabelCountPhrases.Size = new Size(80, 15);
+            tab1LabelCountPhrases.TabIndex = 8;
+            tab1LabelCountPhrases.Text = "CountPhrases";
+            // 
+            // tab1ButtonSearch
+            // 
+            tab1ButtonSearch.Location = new Point(351, 31);
+            tab1ButtonSearch.Name = "tab1ButtonSearch";
+            tab1ButtonSearch.Size = new Size(75, 23);
+            tab1ButtonSearch.TabIndex = 7;
+            tab1ButtonSearch.Text = "Search";
+            tab1ButtonSearch.UseVisualStyleBackColor = true;
+            tab1ButtonSearch.Click += tab1ButtonSearch_Click;
+            // 
+            // tab1TextBoxSearch
+            // 
+            tab1TextBoxSearch.Location = new Point(23, 31);
+            tab1TextBoxSearch.Name = "tab1TextBoxSearch";
+            tab1TextBoxSearch.Size = new Size(299, 23);
+            tab1TextBoxSearch.TabIndex = 6;
+            // 
+            // tab1LabelSearch
+            // 
+            tab1LabelSearch.AutoSize = true;
+            tab1LabelSearch.Location = new Point(23, 13);
+            tab1LabelSearch.Name = "tab1LabelSearch";
+            tab1LabelSearch.Size = new Size(124, 15);
+            tab1LabelSearch.TabIndex = 5;
+            tab1LabelSearch.Text = "Search word or phrase";
+            // 
+            // tab1LabelCountWords
+            // 
+            tab1LabelCountWords.AutoSize = true;
+            tab1LabelCountWords.Location = new Point(23, 75);
+            tab1LabelCountWords.Name = "tab1LabelCountWords";
+            tab1LabelCountWords.Size = new Size(74, 15);
+            tab1LabelCountWords.TabIndex = 4;
+            tab1LabelCountWords.Text = "CountWords";
+            // 
             // tab1TextboxPhrases
             // 
-            tab1TextboxPhrases.Location = new Point(23, 240);
+            tab1TextboxPhrases.BackColor = SystemColors.Window;
+            tab1TextboxPhrases.BorderStyle = BorderStyle.None;
+            tab1TextboxPhrases.Location = new Point(23, 267);
             tab1TextboxPhrases.Name = "tab1TextboxPhrases";
             tab1TextboxPhrases.ReadOnly = true;
-            tab1TextboxPhrases.Size = new Size(273, 132);
+            tab1TextboxPhrases.Size = new Size(667, 132);
             tab1TextboxPhrases.TabIndex = 3;
-            tab1TextboxPhrases.Text = "";
+            tab1TextboxPhrases.Text = "PhrasesTB";
             tab1TextboxPhrases.DoubleClick += tab1TextboxPhrases_DoubleClick;
             // 
             // tab1TextboxWords
             // 
-            tab1TextboxWords.Location = new Point(23, 56);
+            tab1TextboxWords.BackColor = SystemColors.Window;
+            tab1TextboxWords.BorderStyle = BorderStyle.None;
+            tab1TextboxWords.Location = new Point(23, 93);
             tab1TextboxWords.Name = "tab1TextboxWords";
             tab1TextboxWords.ReadOnly = true;
             tab1TextboxWords.ScrollBars = RichTextBoxScrollBars.Vertical;
-            tab1TextboxWords.Size = new Size(273, 132);
+            tab1TextboxWords.Size = new Size(667, 132);
             tab1TextboxWords.TabIndex = 2;
-            tab1TextboxWords.Text = "";
+            tab1TextboxWords.Text = "WordsTB";
             tab1TextboxWords.DoubleClick += tab1TextboxWords_DoubleClick;
-            // 
-            // tab1ButtonPhrases
-            // 
-            tab1ButtonPhrases.Location = new Point(23, 211);
-            tab1ButtonPhrases.Name = "tab1ButtonPhrases";
-            tab1ButtonPhrases.Size = new Size(75, 23);
-            tab1ButtonPhrases.TabIndex = 1;
-            tab1ButtonPhrases.Text = "Phrases";
-            tab1ButtonPhrases.UseVisualStyleBackColor = true;
-            // 
-            // tab1ButtonWords
-            // 
-            tab1ButtonWords.Location = new Point(23, 27);
-            tab1ButtonWords.Name = "tab1ButtonWords";
-            tab1ButtonWords.Size = new Size(75, 23);
-            tab1ButtonWords.TabIndex = 0;
-            tab1ButtonWords.Text = "Words";
-            tab1ButtonWords.UseVisualStyleBackColor = true;
-            tab1ButtonWords.Click += tab1ButtonWord_Click;
             // 
             // tabPage2
             // 
@@ -240,7 +275,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(704, 473);
+            ClientSize = new Size(704, 455);
             Controls.Add(tabControl);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "mainForm";
@@ -248,6 +283,7 @@
             Load += mainForm_Load;
             tabControl.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             tabPage3.ResumeLayout(false);
@@ -271,10 +307,12 @@
         private Button tab2ButtonWord;
         private Button tab2ButtonPhrase;
         private ListBox tab2listBox;
-        private Button tab1ButtonPhrases;
-        private Button tab1ButtonWords;
-        private FolderBrowserDialog folderBrowserDialog1;
         private RichTextBox tab1TextboxPhrases;
         private RichTextBox tab1TextboxWords;
+        private Label tab1LabelCountWords;
+        private Button tab1ButtonSearch;
+        private TextBox tab1TextBoxSearch;
+        private Label tab1LabelSearch;
+        private Label tab1LabelCountPhrases;
     }
 }
