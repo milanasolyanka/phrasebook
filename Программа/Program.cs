@@ -16,7 +16,7 @@ namespace Программа
 
     public class FileHandler
     {
-        string mainPath = Environment.CurrentDirectory + "\\WordContents\\";
+        string mainPath = Environment.CurrentDirectory + "\\";
 
         public void WriteToFile(string fileName, List<Word> words)
         {
@@ -57,7 +57,7 @@ namespace Программа
     public class Dictionary
     {
         private List<Word> words; // Поле для хранения списка слов
-        string mainPath = Environment.CurrentDirectory + "\\WordContents\\";
+        string mainPath = Environment.CurrentDirectory + "\\";
 
         public Dictionary()
         {
