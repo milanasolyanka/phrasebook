@@ -148,14 +148,11 @@ namespace Программа
             // Очистка выделения в текстовых полях
             tab1TextboxWords.SelectionStart = 0;
             tab1TextboxWords.SelectionLength = 0;
-            //tab1TextboxWords.SelectionBackColor = SystemColors.Window;
 
             tab1TextboxPhrases.SelectionStart = 0;
             tab1TextboxPhrases.SelectionLength = 0;
-            //tab1TextboxPhrases.SelectionBackColor = SystemColors.Window;
 
             string searchWord = tab1TextBoxSearch.Text.Trim(); // Получение слова для поиска
-            tab1TextBoxSearch.Text = string.Empty;
 
             // Поиск совпадений в тексте и выделение их
             if (!string.IsNullOrEmpty(searchWord))
@@ -168,15 +165,26 @@ namespace Программа
                     tab1TextboxWords.SelectionLength = searchWord.Length;
                     tab1TextboxWords.Focus(); // Установка фокуса на TextBox с найденным словом
                 }
-
-                // Поиск совпадений в tab1TextboxPhrases
-                int phraseIndex = tab1TextboxPhrases.Text.IndexOf(searchWord, StringComparison.OrdinalIgnoreCase);
-                if (phraseIndex >= 0)
+                else
                 {
-                    tab1TextboxPhrases.SelectionStart = phraseIndex;
-                    tab1TextboxPhrases.SelectionLength = searchWord.Length;
-                    tab1TextboxPhrases.Focus(); // Установка фокуса на TextBox с найденной фразой
+                    // Поиск совпадений в tab1TextboxPhrases
+                    int phraseIndex = tab1TextboxPhrases.Text.IndexOf(searchWord, StringComparison.OrdinalIgnoreCase);
+                    if (phraseIndex >= 0)
+                    {
+                        tab1TextboxPhrases.SelectionStart = phraseIndex;
+                        tab1TextboxPhrases.SelectionLength = searchWord.Length;
+                        tab1TextboxPhrases.Focus(); // Установка фокуса на TextBox с найденной фразой
+                    }
+                    else
+                    {
+                        MessageBox.Show("Key word is not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+                
+            }
+            else
+            {
+                MessageBox.Show("Please, fill in the search field.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -38,13 +38,13 @@ namespace Программа
             }
             else
             {
-                MessageBox.Show("Пожалуйста, заполните все поля.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please, fill in all the fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Вы уверены, что хотите удалить это слово?", "Удаление слова", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Are you sure that you want to delete this word?", "Deleting word", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 DialogResult = DialogResult.Abort; // Возвращаем другой результат, чтобы указать удаление слова
